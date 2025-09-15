@@ -1,0 +1,9 @@
+environment:
+  dev:
+    app:
+      frontend_niffler:
+        http: http://frontend.niffler.dc/
+  uat:
+    app:
+      frontend_niffler:
+        http: http://frontend.niffler.dc1/
