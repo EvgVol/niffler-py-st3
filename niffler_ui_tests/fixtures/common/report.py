@@ -26,7 +26,6 @@ def pytest_runtest_makereport(item, call):
             print(f"[Report] Ошибка сохранения видео: {e}")
 
 
-
 @pytest.fixture(autouse=True)
 def cleanup_reports(settings):
     """Удаляет папки reports и logs после завершения тестов."""

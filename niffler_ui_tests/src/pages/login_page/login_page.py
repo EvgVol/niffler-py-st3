@@ -1,14 +1,15 @@
 from playwright.sync_api import Page
 from niffler_ui_tests.src.playwright.base_page import BasePage
-from niffler_ui_tests.src.pages.login_page.login_locators import LoginPageLocators
+from niffler_ui_tests.src.pages.login_page.login_locators import (
+    LoginPageLocators,
+)
 
 
 class LoginPage(BasePage):
-
     def __init__(self, base_url: str, page: Page, **kwargs):
         super().__init__(
             base_url=base_url,
             page=page,
             locators_class=LoginPageLocators,
-            **kwargs
+            **kwargs,
         )

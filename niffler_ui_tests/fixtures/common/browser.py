@@ -12,7 +12,9 @@ def browser_manager():
 
 
 @pytest.fixture(scope="session")
-def browser_context(browser_manager: BrowserManager, request, settings) -> BrowserContext:
+def browser_context(
+    browser_manager: BrowserManager, request, settings
+) -> BrowserContext:
     """Фикстура для создания контекста браузера."""
     record_video = request.node.get_closest_marker("record_video")
 

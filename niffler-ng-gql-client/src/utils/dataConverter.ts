@@ -13,4 +13,3 @@ export const convertFilterPeriod = (period: FilterPeriodValue) => {
             return;
     }
 }
-

@@ -7,7 +7,7 @@
 - Playwright
 - Requests
 - Pydantic
-- 
+-
 
 
 ## Запуск

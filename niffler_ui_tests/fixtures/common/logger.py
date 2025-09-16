@@ -1,17 +1,14 @@
 from pathlib import Path
 
 import pytest
-from niffler_ui_tests.support.reports import Report
 from niffler_ui_tests.support.logger import Logger
 
 
 @pytest.fixture(scope="session")
 def logger(request, settings):
     """Фикстура для настройки логирования."""
-    report = Report()
     log = Logger(
-        name=request.node.name,
-        log_dir=Path(settings.logging.dir)
+        name=request.node.name, log_dir=Path(settings.logging.dir)
     ).logger
     log.info(f"{"=" * 40}")
     log.info(f"Browser: {settings.browser.browser_name}")
@@ -20,6 +17,7 @@ def logger(request, settings):
     log.info(f"Report path: {settings.report.path}")
     log.info(f"{"-" * 40}")
     return log
+
 
 @pytest.fixture(autouse=True)
 def log_test_start_and_end(request, logger):
