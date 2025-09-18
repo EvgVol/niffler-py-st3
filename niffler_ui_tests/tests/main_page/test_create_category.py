@@ -4,6 +4,8 @@ from niffler_ui_tests.src.pages.main_page.main_page import MainPage
 
 
 class TestCreateCategory:
+
+    @allure.title("Создание траты без категории")
     def test_without_category(self, main_page: MainPage):
         with allure.step("Кликнуть на кнопку добавить трату"):
             main_page.actions("кнопка добавить трату").click()
@@ -16,6 +18,7 @@ class TestCreateCategory:
                 "предупреждение поля категория"
             ).should_have_text("Please choose category")
 
+    @allure.title("Создание траты без суммы")
     def test_without_amount(self, main_page: MainPage):
         with allure.step("Кликнуть на кнопку добавить трату"):
             main_page.actions("кнопка добавить трату").click()
