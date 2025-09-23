@@ -1,9 +1,76 @@
 environment:
+  local:
+    app:
+      frontend_niffler:
+        http: http://frontend.niffler.dc/
+      auth_niffler:
+        database:
+          host: postgres
+          port: 5432
+          db_name: niffler-auth
+      currency_niffler:
+        database:
+          host: postgres
+          port: 5432
+          db_name: niffler-currency
+      spend_niffler:
+        database:
+          host: postgres
+          port: 5432
+          db_name: niffler-spend
+      userdata_niffler:
+        database:
+          host: postgres
+          port: 5432
+          db_name: niffler-userdata
   dev:
     app:
       frontend_niffler:
         http: http://frontend.niffler.dc/
+      auth_niffler:
+        database:
+          host: localhost
+          port: 5432
+          db_name: niffler-auth
+      currency_niffler:
+        database:
+          host: localhost
+          port: 5432
+          db_name: niffler-currency
+      spend_niffler:
+        database:
+          host: localhost
+          port: 5432
+          db_name: niffler-spend
+      userdata_niffler:
+        database:
+          host: localhost
+          port: 5432
+          db_name: niffler-userdata
   uat:
     app:
       frontend_niffler:
         http: http://frontend.niffler.dc1/
+      auth_niffler:
+        database:
+          host: localhost
+          port: 5432
+          db_name: niffler-auth
+      currency_niffler:
+        database:
+          host: localhost
+          port: 5432
+          db_name: niffler-currency
+      spend_niffler:
+        database:
+          host: localhost
+          port: 5432
+          db_name: niffler-spend
+      userdata_niffler:
+        database:
+          host: localhost
+          port: 5432
+          db_name: niffler-userdata
+
+
+

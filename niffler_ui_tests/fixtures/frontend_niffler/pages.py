@@ -21,3 +21,12 @@ def auth(settings, page: Page):
 def main_page(auth: Page) -> MainPage:
     """После авторизации возвращает объект MainPage."""
     return MainPage(base_url=auth.url, page=auth)
+
+
+@pytest.fixture(scope="session")
+def login_page(settings, page: Page) -> LoginPage:
+    login_page = LoginPage(
+        base_url=settings.config.app.frontend_niffler.http, page=page
+    )
+    login_page.open()
+    return login_page
