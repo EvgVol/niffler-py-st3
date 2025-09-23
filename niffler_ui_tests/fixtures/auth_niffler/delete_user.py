@@ -2,12 +2,10 @@ import allure
 import pytest
 
 from niffler_ui_tests.src.database.db_manager import DbManager
-from niffler_ui_tests.support import fake
 
 
 @pytest.fixture(scope="session")
 def delete_user(auth_niffler_db: DbManager):
-
     contest = {}
 
     yield contest
@@ -18,9 +16,14 @@ def delete_user(auth_niffler_db: DbManager):
 
     with allure.step(f"Удаление пользователя {username} и его зависимостей"):
         with allure.step("Получение id пользователя"):
-            user = auth_niffler_db.use_table("user").filter_by({"username": username})
+            user = auth_niffler_db.use_table("user").filter_by(
+                {"username": username}
+            )
             if not user or not user.body:
-                allure.attach(f"Пользователь {username} не найден в таблице user", name="DB Cleanup")
+                allure.attach(
+                    f"Пользователь {username} не найден в таблице user",
+                    name="DB Cleanup",
+                )
                 return
             user_id = user.body[0]["id"]
             allure.attach(str(user_id), name="User ID")

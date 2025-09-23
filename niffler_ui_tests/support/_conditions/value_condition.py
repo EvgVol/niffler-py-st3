@@ -7,6 +7,7 @@ class ValueCondition(Condition):
     """
     Условие для проверки значения.
     """
+
     def __init__(
         self,
         matcher: Matcher,

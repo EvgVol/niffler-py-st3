@@ -6,17 +6,17 @@ from niffler_ui_tests.src.database.db_manager import DbManager
 
 @pytest.fixture
 def userdata_niffler_db(settings: Settings) -> DbManager:
-     db = DbManager(
+    db = DbManager(
         db_host=settings.config.app.userdata_niffler.database.host,
         db_port=settings.config.app.userdata_niffler.database.port,
         db_name=settings.config.app.userdata_niffler.database.db_name,
         db_user=settings.environment.userdata_niffler_db_user,
-        db_password=settings.environment.userdata_niffler_db_password
-     )
-     session = db.open_session()
+        db_password=settings.environment.userdata_niffler_db_password,
+    )
+    session = db.open_session()
 
-     try:
-         yield db
+    try:
+        yield db
 
-     finally:
-         session.close()
+    finally:
+        session.close()

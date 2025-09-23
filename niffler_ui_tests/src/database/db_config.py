@@ -29,4 +29,4 @@ class DbConfig(BaseModel):
     def build_url(self) -> str:
         """Формирует URL для подключения к БД."""
         driver = DB_TYPES[self.db_type]
-        return f"postgresql+psycopg2://{self.db_user}:{self.db_password}@{self.host}:{self.port}/{self.db_name}"
+        return f"{driver}://{self.db_user}:{self.db_password}@{self.host}:{self.port}/{self.db_name}"

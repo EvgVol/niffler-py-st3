@@ -85,4 +85,4 @@ class BasePage:
 
     @allure.step("Пауза с таймаутом {timeout} секунд")
     def pause(self, timeout: float):
-        self.page.wait_for_timeout(timeout * 10 ** 3)
+        self.page.wait_for_timeout(timeout * 10**3)

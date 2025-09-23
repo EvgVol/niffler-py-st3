@@ -4,8 +4,7 @@ from faker import Faker
 
 
 class Fake:
-
-    def __init__(self, language: str = 'ru_RU'):
+    def __init__(self, language: str = "ru_RU"):
         self.fake = Faker(language)
 
     def username(self) -> str:

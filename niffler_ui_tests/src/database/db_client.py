@@ -10,6 +10,7 @@ from niffler_ui_tests.src.database.db_response import DbResponse
 
 logger = logging.getLogger(__name__)
 
+
 class DbClient:
     """Клиент для работы с SQL-запросами через SQLModel."""
 
@@ -22,7 +23,9 @@ class DbClient:
     def full_table(self) -> str:
         """Полное имя таблицы schema.table"""
         if not self._table:
-            raise ValueError("Таблица не выбрана. Используй .use_table(table).")
+            raise ValueError(
+                "Таблица не выбрана. Используй .use_table(table)."
+            )
         return f"{self._schema}.{self._table}"
 
     def use_table(self, table: str, schema: str | None = None) -> "DbClient":
@@ -43,9 +46,13 @@ class DbClient:
         if params:
             msg += f" | params: {params}"
         logger.info(msg)
-        allure.attach(msg, name="SQL Log", attachment_type=allure.attachment_type.TEXT)
+        allure.attach(
+            msg, name="SQL Log", attachment_type=allure.attachment_type.TEXT
+        )
 
-    def execute_query(self, query: str, params: dict | None = None) -> DbResponse:
+    def execute_query(
+        self, query: str, params: dict | None = None
+    ) -> DbResponse:
         """
         Выполнить INSERT/UPDATE/DELETE/DDL.
 
@@ -75,7 +82,12 @@ class DbClient:
         result = self.session.exec(statement).mappings().first()
         elapsed = round(time.perf_counter() - start, 4)
         self._log_query(query, elapsed, params)
-        return DbResponse(query, dict(result) if result else None, rowcount=1 if result else 0, execution_time=elapsed)
+        return DbResponse(
+            query,
+            dict(result) if result else None,
+            rowcount=1 if result else 0,
+            execution_time=elapsed,
+        )
 
     def fetch_all(self, query: str, params: dict | None = None) -> DbResponse:
         """
@@ -92,7 +104,12 @@ class DbClient:
         results = self.session.exec(statement).mappings().all()
         elapsed = round(time.perf_counter() - start, 4)
         self._log_query(query, elapsed, params)
-        return DbResponse(query, [dict(r) for r in results], rowcount=len(results), execution_time=elapsed)
+        return DbResponse(
+            query,
+            [dict(r) for r in results],
+            rowcount=len(results),
+            execution_time=elapsed,
+        )
 
     def scalar(self, query: str, params: dict | None = None) -> DbResponse:
         """
@@ -120,7 +137,11 @@ class DbClient:
         return resp
 
     def filter_by(
-        self, conditions: dict[str, Any], limit: int | None = None, order_by: str | None = None, desc: bool = True
+        self,
+        conditions: dict[str, Any],
+        limit: int | None = None,
+        order_by: str | None = None,
+        desc: bool = True,
     ) -> DbResponse:
         where_clauses = []
         for k, v in conditions.items():
@@ -142,7 +163,9 @@ class DbClient:
         if limit:
             query += f" LIMIT {limit}"
 
-        with allure.step(f"Фильтрация записей таблицы {self.full_table} по условиям {conditions}"):
+        with allure.step(
+            f"Фильтрация записей таблицы {self.full_table} по условиям {conditions}"
+        ):
             result = self.fetch_all(query)
             self._log_query(query, result.execution_time)
             return result
@@ -163,7 +186,9 @@ class DbClient:
                     where_clauses.append(f"{k} = {repr(v)}")
             query += " WHERE " + " AND ".join(where_clauses)
 
-        with allure.step(f"Подсчёт количества записей в таблице {self._table} с условиями {conditions}"):
+        with allure.step(
+            f"Подсчёт количества записей в таблице {self._table} с условиями {conditions}"
+        ):
             resp = self.fetch_one(query)
             self._log_query(query, resp.execution_time)
             return resp.body["cnt"] if resp and resp.body else 0
@@ -185,7 +210,9 @@ class DbClient:
         where_sql = " AND ".join(where_clauses)
         query = f"DELETE FROM {self.full_table} WHERE {where_sql}"
 
-        with allure.step(f"Удаление записей из {self.full_table} по условиям {conditions}"):
+        with allure.step(
+            f"Удаление записей из {self.full_table} по условиям {conditions}"
+        ):
             result = self.execute_query(query)
             self._log_query(query, result.execution_time)
             return result

@@ -22,7 +22,7 @@ class DbResponse:
         query: str,
         result: Any,
         rowcount: int | None = None,
-        execution_time: float | None = None
+        execution_time: float | None = None,
     ):
         """
         :param query: SQL-запрос.
@@ -33,8 +33,12 @@ class DbResponse:
         self.query = query
         self.result = self._normalize_result(result)
         self.rowcount = (
-            rowcount if rowcount is not None else (
-                len(result) if isinstance(result, list) else (1 if result else 0)
+            rowcount
+            if rowcount is not None
+            else (
+                len(result)
+                if isinstance(result, list)
+                else (1 if result else 0)
             )
         )
         self.execution_time = execution_time
@@ -65,7 +69,9 @@ class DbResponse:
         """Привести RealDictRow к обычному dict."""
         if isinstance(result, RealDictRow):
             return dict(result)
-        if isinstance(result, list) and all(isinstance(r, RealDictRow) for r in result):
+        if isinstance(result, list) and all(
+            isinstance(r, RealDictRow) for r in result
+        ):
             return [dict(r) for r in result]
         return result
 
@@ -87,14 +93,14 @@ class DbResponse:
             allure.attach(
                 self.query,
                 name="SQL-запрос",
-                attachment_type=allure.attachment_type.TEXT
+                attachment_type=allure.attachment_type.TEXT,
             )
             allure.attach(
                 json.dumps(
                     self.result,
                     ensure_ascii=False,
                     indent=2,
-                    default=_json_serializer
+                    default=_json_serializer,
                 ),
                 name="Результат SQL-запроса",
                 attachment_type=allure.attachment_type.JSON,

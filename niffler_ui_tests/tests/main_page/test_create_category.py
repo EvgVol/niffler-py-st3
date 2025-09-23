@@ -4,7 +4,6 @@ from niffler_ui_tests.src.pages.main_page.main_page import MainPage
 
 
 class TestCreateCategory:
-
     @allure.title("Создание траты без категории")
     def test_without_category(self, main_page: MainPage):
         with allure.step("Кликнуть на кнопку добавить трату"):

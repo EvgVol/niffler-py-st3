@@ -11,6 +11,7 @@ class AllureAttachmentData:
     """
     Данные для прикрепления в Allure.
     """
+
     def __init__(
         self, name: str, body: Any, attachment_type=allure.attachment_type.JSON
     ):
@@ -31,7 +32,9 @@ class RegexMatcher:
     def match(self, value):
         if isinstance(value, str) and self.pattern.match(value):
             return matched()
-        return unmatched(f"'{value}' does not match regex '{self.pattern.pattern}'")
+        return unmatched(
+            f"'{value}' does not match regex '{self.pattern.pattern}'"
+        )
 
     def describe(self):
         return f"string matching regex '{self.pattern.pattern}'"

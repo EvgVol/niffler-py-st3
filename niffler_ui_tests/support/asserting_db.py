@@ -1,5 +1,3 @@
-import re
-
 import allure
 from typing import Any
 
@@ -8,7 +6,10 @@ from precisely import equal_to, not_, includes, mapping_includes
 from niffler_ui_tests.src.database.db_response import DbResponse
 from niffler_ui_tests.support._conditions.database_condition import DbCondition
 from niffler_ui_tests.support.asserting import Assert
-from niffler_ui_tests.support.utils import AllureAttachmentData, PasswordHashMatcher
+from niffler_ui_tests.support.utils import (
+    AllureAttachmentData,
+    PasswordHashMatcher,
+)
 
 
 class AssertDB(Assert):
@@ -18,9 +19,9 @@ class AssertDB(Assert):
 
     @staticmethod
     def _build_matcher(
-            expected_item: Any,
-            field_name: str | None = None,
-            hash_type: str | None = None
+        expected_item: Any,
+        field_name: str | None = None,
+        hash_type: str | None = None,
     ):
         """
         Возвращает matcher для проверки значения в БД.
@@ -28,13 +29,22 @@ class AssertDB(Assert):
         Если hash_type указан, возвращает PasswordHashMatcher для поля password.
         """
         if hash_type and field_name == "password":
-            return includes(mapping_includes({field_name: PasswordHashMatcher(hash_type)}))
+            return includes(
+                mapping_includes({field_name: PasswordHashMatcher(hash_type)})
+            )
         if isinstance(expected_item, dict):
             return includes(mapping_includes(expected_item))
         return includes(expected_item)
 
     @classmethod
-    def db_equal(cls, response: DbResponse, expected_value: Any, *, description: str = "", error_reason: str = ""):
+    def db_equal(
+        cls,
+        response: DbResponse,
+        expected_value: Any,
+        *,
+        description: str = "",
+        error_reason: str = "",
+    ):
         """Проверяет, что результат SQL-запроса равен ожидаемому значению."""
         condition = DbCondition(
             response=response,
@@ -51,7 +61,13 @@ class AssertDB(Assert):
         cls._should_have(response.body, condition)
 
     @classmethod
-    def db_not_null(cls, response: DbResponse, *, description: str = "", error_reason: str = ""):
+    def db_not_null(
+        cls,
+        response: DbResponse,
+        *,
+        description: str = "",
+        error_reason: str = "",
+    ):
         """Проверяет, что результат SQL-запроса не NULL."""
         condition = DbCondition(
             response=response,
@@ -69,7 +85,7 @@ class AssertDB(Assert):
         expected_item: Any,
         *,
         description: str = "",
-        error_reason: str = ""
+        error_reason: str = "",
     ):
         """
         Проверяет, что результат SQL-запроса содержит ожидаемый элемент.
@@ -102,7 +118,7 @@ class AssertDB(Assert):
         hash_type: str | None = None,
         *,
         description: str = "",
-        error_reason: str = ""
+        error_reason: str = "",
     ):
         """
         Проверяет, что поле `password` содержит хэшированный пароль.
@@ -117,10 +133,18 @@ class AssertDB(Assert):
 
         supported_types = ("bcrypt", "argon2", "pbkdf2")
         if hash_type and hash_type not in supported_types:
-            raise ValueError(f"hash_type должен быть одним из {supported_types}, но получен: {hash_type}")
+            raise ValueError(
+                f"hash_type должен быть одним из {supported_types}, но получен: {hash_type}"
+            )
 
-        expected_body = f"{{{hash_type}}}..." if hash_type else "{" + "|".join(supported_types) + "}..."
-        matcher = cls._build_matcher({}, field_name=field_name, hash_type=hash_type)
+        expected_body = (
+            f"{{{hash_type}}}..."
+            if hash_type
+            else "{" + "|".join(supported_types) + "}..."
+        )
+        matcher = cls._build_matcher(
+            {}, field_name=field_name, hash_type=hash_type
+        )
 
         condition = DbCondition(
             response=response,

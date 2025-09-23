@@ -1,5 +1,4 @@
 from pathlib import Path
-from typing import Literal
 from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
@@ -23,13 +22,17 @@ class Settings(BaseSettings):
     Объединяет все секции настроек (окружение, браузер, логи, отчеты).
     """
 
-    environment: EnvironmentSettings = Field(default_factory=EnvironmentSettings)
+    environment: EnvironmentSettings = Field(
+        default_factory=EnvironmentSettings
+    )
     browser: BrowserSettings = Field(default_factory=BrowserSettings)
     logging: LoggingSettings = Field(default_factory=LoggingSettings)
     report: ReportSettings = Field(default_factory=ReportSettings)
     config: Config | None = None
 
-    model_config = SettingsConfigDict(env_file=".env", env_nested_delimiter="__")
+    model_config = SettingsConfigDict(
+        env_file=".env", env_nested_delimiter="__"
+    )
 
     def load_config(self) -> "Settings":
         """Подгружает конфиг из YAML."""

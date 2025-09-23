@@ -8,8 +8,11 @@ class Condition:
     """
     Базовое условие для проверки.
     """
+
     def __init__(
-            self, matcher: Matcher, expected_data_attachment: AllureAttachmentData | None = None
+        self,
+        matcher: Matcher,
+        expected_data_attachment: AllureAttachmentData | None = None,
     ):
         """
         :param matcher: Матчер для проверки

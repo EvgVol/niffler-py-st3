@@ -1,5 +1,3 @@
-import allure
-from pydantic import BaseModel
 from sqlalchemy import Engine
 from sqlmodel import create_engine, Session
 
@@ -63,4 +61,3 @@ class DbManager(DbClient):
     def __exit__(self, exc_type, exc_val, exc_tb) -> None:
         """Закрывает сессию через контекст."""
         self.close_session(exc_type, exc_val, exc_tb)
-

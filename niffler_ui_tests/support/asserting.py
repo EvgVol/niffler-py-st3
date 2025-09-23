@@ -1,7 +1,7 @@
 from typing import Any
 
 import allure
-from precisely import assert_that, Matcher, equal_to
+from precisely import assert_that, equal_to
 
 from niffler_ui_tests.support._conditions.base_condition import Condition
 from niffler_ui_tests.support._conditions.value_condition import ValueCondition
