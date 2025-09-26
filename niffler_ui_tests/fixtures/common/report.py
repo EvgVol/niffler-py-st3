@@ -1,6 +1,4 @@
-from pathlib import Path
 import pytest
-import shutil
 
 from niffler_ui_tests.support.reports import Report
 

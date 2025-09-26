@@ -1,5 +1,4 @@
 import json
-import logging
 
 from datetime import datetime
 from typing import Any
@@ -9,7 +8,10 @@ import allure
 from psycopg2.extras import RealDictRow
 
 from niffler_ui_tests.support.logger import Logger
-from niffler_ui_tests.support.utils import AllureAttachmentData, _json_serializer
+from niffler_ui_tests.support.utils import (
+    AllureAttachmentData,
+    _json_serializer,
+)
 
 logger = Logger(name="root").logger
 
@@ -94,7 +96,9 @@ class DbResponse:
             self.query,
             self.rowcount,
             f"{self.execution_time:.4f}s" if self.execution_time else None,
-            json.dumps(self.result, ensure_ascii=False, default=_json_serializer),
+            json.dumps(
+                self.result, ensure_ascii=False, default=_json_serializer
+            ),
         )
 
         with allure.step("SQL-запрос и ответ БД"):

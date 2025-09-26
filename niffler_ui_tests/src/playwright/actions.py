@@ -1,5 +1,4 @@
 import json
-import logging
 from typing import Any
 
 import allure
@@ -10,6 +9,7 @@ from niffler_ui_tests.support.logger import Logger
 from niffler_ui_tests.support.utils import AllureAttachmentData
 
 logger = Logger(name="root").logger
+
 
 class Actions:
     """Класс с методами для взаимодействия с элементами страницы."""
@@ -68,5 +68,7 @@ class Actions:
 
     def hover(self):
         """Наведение курсора на элемент."""
-        self._log_attach(self.hover.__doc__,)
+        self._log_attach(
+            self.hover.__doc__,
+        )
         self._locator.hover()

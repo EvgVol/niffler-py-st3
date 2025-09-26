@@ -1,6 +1,5 @@
 import json
 import re
-import logging
 from datetime import datetime
 from typing import Any
 
@@ -12,7 +11,6 @@ from precisely.results import matched, unmatched
 from niffler_ui_tests.support.logger import Logger
 
 logger = Logger(name="root").logger
-
 
 
 def _json_serializer(obj):
@@ -43,7 +41,12 @@ class AllureAttachmentData:
         """Прикрепляет данные в Allure."""
         try:
             content = (
-                json.dumps(self.body, ensure_ascii=False, indent=2, default=_json_serializer)
+                json.dumps(
+                    self.body,
+                    ensure_ascii=False,
+                    indent=2,
+                    default=_json_serializer,
+                )
                 if isinstance(self.body, (dict, list))
                 else str(self.body)
             )

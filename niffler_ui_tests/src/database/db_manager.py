@@ -1,6 +1,5 @@
 from sqlalchemy import Engine
 import allure
-import logging
 from sqlmodel import create_engine, Session
 
 from niffler_ui_tests.src.database.db_client import DbClient
@@ -9,6 +8,7 @@ from niffler_ui_tests.support.logger import Logger
 from niffler_ui_tests.support.utils import AllureAttachmentData
 
 logger = Logger(name="root").logger
+
 
 class DbManager(DbClient):
     """
@@ -40,8 +40,6 @@ class DbManager(DbClient):
         )
         self._session: Session | None = None
         super().__init__(session=None)
-
-
 
     def open_session(self) -> Session:
         """Открывает сессию."""

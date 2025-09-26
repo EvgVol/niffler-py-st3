@@ -4,12 +4,6 @@ import pytest
 from niffler_ui_tests.src.pages.login_page.login_page import LoginPage
 
 
-import allure
-import pytest
-
-from niffler_ui_tests.src.pages.login_page.login_page import LoginPage
-
-
 @allure.epic("Аутентификация")
 @allure.feature("Форма авторизации (Login)")
 class TestLoginPageVisibility:
@@ -26,8 +20,9 @@ class TestLoginPageVisibility:
     @allure.story("Отображение полей ввода")
     @allure.title("Поля авторизации видны на странице")
     @pytest.mark.parametrize(
-        "field", ["поле ввода логина", "поле ввода пароля"],
-        ids=['visible field login', 'visible field password'],
+        "field",
+        ["поле ввода логина", "поле ввода пароля"],
+        ids=["visible field login", "visible field password"],
     )
     def test_visible_fields(self, client: LoginPage, field: str):
         with allure.step("Открытие страницы авторизации"):
@@ -38,8 +33,9 @@ class TestLoginPageVisibility:
     @allure.story("Отображение кнопок")
     @allure.title("Кнопки авторизации видны на странице")
     @pytest.mark.parametrize(
-        "button", ["кнопка входа", "кнопка регистрации"],
-        ids=['visible button login', 'visible button signup'],
+        "button",
+        ["кнопка входа", "кнопка регистрации"],
+        ids=["visible button login", "visible button signup"],
     )
     def test_visible_buttons(self, client: LoginPage, button: str):
         with allure.step("Открытие страницы авторизации"):

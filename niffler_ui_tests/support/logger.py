@@ -15,10 +15,11 @@ class AllureHandler(logging.Handler):
             allure.attach(
                 log_entry,
                 name=f"[{record.levelname}] {record.name}",
-                attachment_type=allure.attachment_type.TEXT
+                attachment_type=allure.attachment_type.TEXT,
             )
         except Exception:
             pass
+
 
 class Logger:
     """Класс для создания и настройки логгера."""
@@ -50,7 +51,9 @@ class Logger:
         formatter = logging.Formatter(settings.logging.format)
 
         self._logger = logging.getLogger(name)
-        self._logger.setLevel(getattr(logging, log_level.upper(), logging.INFO))
+        self._logger.setLevel(
+            getattr(logging, log_level.upper(), logging.INFO)
+        )
         self._logger.handlers.clear()
 
         # Console
@@ -59,7 +62,10 @@ class Logger:
 
         # File (с ротацией)
         file_handler = RotatingFileHandler(
-            log_file, maxBytes=max_file_size, backupCount=backup_count, encoding="utf-8"
+            log_file,
+            maxBytes=max_file_size,
+            backupCount=backup_count,
+            encoding="utf-8",
         )
         file_handler.setFormatter(formatter)
 

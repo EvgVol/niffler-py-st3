@@ -3,6 +3,7 @@ import pytest
 
 from niffler_ui_tests.src.pages.main_page.main_page import MainPage
 
+
 @allure.epic("Финансы")
 @allure.feature("Навигация и переходы")
 class TestTransition:

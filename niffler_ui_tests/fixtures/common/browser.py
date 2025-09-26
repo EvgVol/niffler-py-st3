@@ -12,9 +12,7 @@ def browser_manager():
 
 
 @pytest.fixture
-def browser_context(
-    browser_manager: BrowserManager
-) -> BrowserContext:
+def browser_context(browser_manager: BrowserManager) -> BrowserContext:
     """Фикстура для создания контекста браузера."""
     context_options = browser_manager.config.get_context_options()
     context = browser_manager.get_browser().new_context(**context_options)

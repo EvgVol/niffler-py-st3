@@ -2,15 +2,10 @@ import allure
 
 from niffler_ui_tests.src.pages.main_page.main_page import MainPage
 
-import allure
-
-from niffler_ui_tests.src.pages.main_page.main_page import MainPage
-
 
 @allure.epic("Финансы")
 @allure.feature("Создание траты (Expense)")
 class TestCreateCategory:
-
     @allure.story("Валидация обязательного поля 'Категория'")
     @allure.title("Создание траты без категории")
     def test_without_category(self, main_page: MainPage):

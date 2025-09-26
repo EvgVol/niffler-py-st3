@@ -2,7 +2,6 @@ import json
 import re
 import allure
 from typing import TypeAlias, Any
-import logging
 
 from playwright.sync_api import expect, Page, Locator as PlaywrightLocator
 
@@ -52,11 +51,17 @@ class BasePage:
             raise ValueError(msg)
         return locator.get_locator(self.page)
 
-    def _log_attach(self, action: str, element: Any = None, details: Any = None) -> None:
+    def _log_attach(
+        self, action: str, element: Any = None, details: Any = None
+    ) -> None:
         """Логирует и прикрепляет действие в Allure."""
 
         element_str = str(element) if element is not None else "N/A"
-        details_str = json.dumps(details, ensure_ascii=False, indent=2) if details else None
+        details_str = (
+            json.dumps(details, ensure_ascii=False, indent=2)
+            if details
+            else None
+        )
 
         logger.info(
             "UI Action | action=%s | element=%s | details=%s",
@@ -104,7 +109,10 @@ class BasePage:
     def asserts(self, name: LocatorType) -> Assertions:
         """Возвращает объект с ассершенами для страницы."""
         return Assertions(
-            page=self.page, base_url=self.base_url, locator=self.element(name), element=name
+            page=self.page,
+            base_url=self.base_url,
+            locator=self.element(name),
+            element=name,
         )
 
     @allure.step("Проверка, что URL содержит: {url_part}")
@@ -112,12 +120,18 @@ class BasePage:
         """
         Проверяет, что текущий URL содержит указанный фрагмент.
         """
-        self._log_attach("Проверка URL", element=self.page.url, details={"contains": url_part})
+        self._log_attach(
+            "Проверка URL",
+            element=self.page.url,
+            details={"contains": url_part},
+        )
         expect(self.page).to_have_url(
             re.compile(f".*{url_part}.*"), timeout=timeout or 5000
         )
 
     @allure.step("Пауза с таймаутом {timeout} секунд")
     def pause(self, timeout: float):
-        self._log_attach("Пауза", element="wait_for_timeout", details={"timeout": timeout})
+        self._log_attach(
+            "Пауза", element="wait_for_timeout", details={"timeout": timeout}
+        )
         self.page.wait_for_timeout(timeout * 10**3)
