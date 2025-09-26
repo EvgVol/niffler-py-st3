@@ -5,17 +5,14 @@ import pytest
 from playwright.sync_api import BrowserContext, Page
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture
 def page(
-    browser_context: BrowserContext, request, logger
+    browser_context: BrowserContext, request
 ) -> Generator[Page, Any, None]:
     """Фикстура для работы с отдельной страницей браузера."""
+    record_video = request.node.get_closest_marker("record_video")
+    if record_video:
+        browser_context.tracing.start(screenshots=True, snapshots=True)
     page = browser_context.new_page()
-    page.logger = logger
-    logger.info("Создана новая страница браузера")
-    page.context.tracing.start(screenshots=True, snapshots=True, sources=True)
-
     yield page
-
     page.close()
-    logger.info("=" * 40)

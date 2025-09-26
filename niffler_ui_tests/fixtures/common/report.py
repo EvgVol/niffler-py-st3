@@ -1,6 +1,4 @@
-from pathlib import Path
 import pytest
-import shutil
 
 from niffler_ui_tests.support.reports import Report
 
@@ -26,15 +24,15 @@ def pytest_runtest_makereport(item, call):
             print(f"[Report] Ошибка сохранения видео: {e}")
 
 
-@pytest.fixture(autouse=True)
-def cleanup_reports(settings):
-    """Удаляет папки reports и logs после завершения тестов."""
-    yield
-    reports_dir = Path(settings.report.path)
-    log_dir = Path(settings.logging.dir)
-
-    if reports_dir.exists():
-        shutil.rmtree(reports_dir)
-
-    if log_dir.exists():
-        shutil.rmtree(log_dir)
+# @pytest.fixture(autouse=True)
+# def cleanup_reports(settings):
+#     """Удаляет папки reports и logs после завершения тестов."""
+#     yield
+#     reports_dir = Path(settings.report.path)
+#     log_dir = Path(settings.logging.dir)
+#
+#     if reports_dir.exists():
+#         shutil.rmtree(reports_dir)
+#
+#     if log_dir.exists():
+#         shutil.rmtree(log_dir)
