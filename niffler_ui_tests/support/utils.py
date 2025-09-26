@@ -1,10 +1,25 @@
+import json
 import re
+import logging
+from datetime import datetime
 from typing import Any
 
 import allure
 
 from precisely import Matcher
 from precisely.results import matched, unmatched
+
+from niffler_ui_tests.support.logger import Logger
+
+logger = Logger(name="root").logger
+
+
+
+def _json_serializer(obj):
+    """Сериализация объектов (например, datetime) в JSON-совместимый формат."""
+    if isinstance(obj, datetime):
+        return obj.isoformat()
+    return str(obj)
 
 
 class AllureAttachmentData:
@@ -23,6 +38,23 @@ class AllureAttachmentData:
         self.name = name
         self.body = body
         self.attachment_type = attachment_type
+
+    def attach(self) -> None:
+        """Прикрепляет данные в Allure."""
+        try:
+            content = (
+                json.dumps(self.body, ensure_ascii=False, indent=2, default=_json_serializer)
+                if isinstance(self.body, (dict, list))
+                else str(self.body)
+            )
+
+            allure.attach(
+                content,
+                name=self.name,
+                attachment_type=self.attachment_type,
+            )
+        except Exception as e:
+            logger.error(f"[AllureAttachmentData] Ошибка прикрепления: {e}")
 
 
 class RegexMatcher:

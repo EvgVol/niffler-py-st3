@@ -1,4 +1,4 @@
-import logging
+
 import time
 from typing import Any
 
@@ -7,8 +7,6 @@ from sqlalchemy import text
 from sqlmodel import Session
 
 from niffler_ui_tests.src.database.db_response import DbResponse
-
-logger = logging.getLogger(__name__)
 
 
 class DbClient:
@@ -40,16 +38,6 @@ class DbClient:
             self._schema = schema
         return self
 
-    @staticmethod
-    def _log_query(query: str, elapsed: float, params: dict | None = None):
-        msg = f"SQL executed in {elapsed:.4f}s: {query}"
-        if params:
-            msg += f" | params: {params}"
-        logger.info(msg)
-        allure.attach(
-            msg, name="SQL Log", attachment_type=allure.attachment_type.TEXT
-        )
-
     def execute_query(
         self, query: str, params: dict | None = None
     ) -> DbResponse:
@@ -64,7 +52,6 @@ class DbClient:
         self.session.exec(text(query), params=params or {})
         self.session.commit()
         elapsed = round(time.perf_counter() - start, 4)
-        self._log_query(query, elapsed, params)
         return DbResponse(query, None, rowcount=-1, execution_time=elapsed)
 
     def fetch_one(self, query: str, params: dict | None = None) -> DbResponse:
@@ -81,7 +68,6 @@ class DbClient:
             statement = statement.params(**params)
         result = self.session.exec(statement).mappings().first()
         elapsed = round(time.perf_counter() - start, 4)
-        self._log_query(query, elapsed, params)
         return DbResponse(
             query,
             dict(result) if result else None,
@@ -103,7 +89,6 @@ class DbClient:
             statement = statement.params(**params)
         results = self.session.exec(statement).mappings().all()
         elapsed = round(time.perf_counter() - start, 4)
-        self._log_query(query, elapsed, params)
         return DbResponse(
             query,
             [dict(r) for r in results],
@@ -166,9 +151,7 @@ class DbClient:
         with allure.step(
             f"Фильтрация записей таблицы {self.full_table} по условиям {conditions}"
         ):
-            result = self.fetch_all(query)
-            self._log_query(query, result.execution_time)
-            return result
+            return self.fetch_all(query)
 
     def count(self, conditions: dict[str, Any] | None = None) -> int:
         """
@@ -190,7 +173,6 @@ class DbClient:
             f"Подсчёт количества записей в таблице {self._table} с условиями {conditions}"
         ):
             resp = self.fetch_one(query)
-            self._log_query(query, resp.execution_time)
             return resp.body["cnt"] if resp and resp.body else 0
 
     def delete(self, conditions: dict[str, Any]) -> DbResponse:
@@ -213,6 +195,4 @@ class DbClient:
         with allure.step(
             f"Удаление записей из {self.full_table} по условиям {conditions}"
         ):
-            result = self.execute_query(query)
-            self._log_query(query, result.execution_time)
-            return result
+            return self.execute_query(query)

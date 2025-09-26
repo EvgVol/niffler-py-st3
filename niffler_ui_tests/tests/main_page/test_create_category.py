@@ -2,8 +2,16 @@ import allure
 
 from niffler_ui_tests.src.pages.main_page.main_page import MainPage
 
+import allure
 
+from niffler_ui_tests.src.pages.main_page.main_page import MainPage
+
+
+@allure.epic("Финансы")
+@allure.feature("Создание траты (Expense)")
 class TestCreateCategory:
+
+    @allure.story("Валидация обязательного поля 'Категория'")
     @allure.title("Создание траты без категории")
     def test_without_category(self, main_page: MainPage):
         with allure.step("Кликнуть на кнопку добавить трату"):
@@ -17,6 +25,7 @@ class TestCreateCategory:
                 "предупреждение поля категория"
             ).should_have_text("Please choose category")
 
+    @allure.story("Валидация обязательного поля 'Сумма'")
     @allure.title("Создание траты без суммы")
     def test_without_amount(self, main_page: MainPage):
         with allure.step("Кликнуть на кнопку добавить трату"):

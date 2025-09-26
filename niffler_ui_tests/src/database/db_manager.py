@@ -1,9 +1,14 @@
 from sqlalchemy import Engine
+import allure
+import logging
 from sqlmodel import create_engine, Session
 
 from niffler_ui_tests.src.database.db_client import DbClient
 from niffler_ui_tests.src.database.db_config import DbConfig
+from niffler_ui_tests.support.logger import Logger
+from niffler_ui_tests.support.utils import AllureAttachmentData
 
+logger = Logger(name="root").logger
 
 class DbManager(DbClient):
     """
@@ -36,11 +41,33 @@ class DbManager(DbClient):
         self._session: Session | None = None
         super().__init__(session=None)
 
+
+
     def open_session(self) -> Session:
         """Открывает сессию."""
         if self._session is None:
             self._session = Session(self.engine)
             self.session = self._session
+
+            msg = (
+                f"Подключение к БД: {self.database_url.db_name} "
+                f"(host={self.database_url.host}, port={self.database_url.port}, "
+                f"user={self.database_url.db_user})"
+            )
+            logger.info(msg)
+
+            attachment = AllureAttachmentData(
+                name="DB Connection",
+                body={
+                    "db_name": self.database_url.db_name,
+                    "host": self.database_url.host,
+                    "port": self.database_url.port,
+                    "user": self.database_url.db_user,
+                },
+                attachment_type=allure.attachment_type.JSON,
+            )
+            attachment.attach()
+
         return self._session
 
     def close_session(self, exc_type=None, exc_val=None, exc_tb=None) -> None:
