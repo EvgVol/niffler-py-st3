@@ -1,4 +1,5 @@
 import re
+import allure
 from typing import TypeAlias
 import logging
 
@@ -81,3 +82,7 @@ class BasePage:
         expect(self.page).to_have_url(
             re.compile(f".*{url_part}.*"), timeout=timeout or 5000
         )
+
+    @allure.step("Пауза с таймаутом {timeout} секунд")
+    def pause(self, timeout: float):
+        self.page.wait_for_timeout(timeout * 10**3)

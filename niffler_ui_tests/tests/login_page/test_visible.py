@@ -11,6 +11,7 @@ def test_visible_logo(client: LoginPage):
     with allure.step("Проверка видимости логотипа"):
         login_page.asserts("логотип").should_be_visible()
 
+
 @allure.title("Поля авторизации видны на странице")
 @pytest.mark.parametrize("field", ["поле ввода логина", "поле ввода пароля"])
 def test_visible_fields(client: LoginPage, field: str):

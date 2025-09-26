@@ -1,6 +1,14 @@
 from niffler_ui_tests.configs.loader.pytest_plugins import get_pytest_plugins
 
-pytest_plugins = get_pytest_plugins(service_name=["frontend_niffler"])
+pytest_plugins = get_pytest_plugins(
+    service_name=[
+        "frontend_niffler",
+        "auth_niffler",
+        "currency_niffler",
+        "spend_niffler",
+        "userdata_niffler",
+    ]
+)
 
 
 if __name__ == "__main__":
