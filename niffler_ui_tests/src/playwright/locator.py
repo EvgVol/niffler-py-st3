@@ -53,10 +53,14 @@ class Locator(BaseModel):
         errors = []
 
         if self.method and not self.value:
-            errors.append(f"Для метода '{self.method}' необходимо указать 'value'.")
+            errors.append(
+                f"Для метода '{self.method}' необходимо указать 'value'."
+            )
 
         if not self.method and not self.selector:
-            errors.append("Необходимо указать либо 'selector', либо 'method' + 'value'.")
+            errors.append(
+                "Необходимо указать либо 'selector', либо 'method' + 'value'."
+            )
 
         if errors:
             raise ValueError(" ".join(errors))
@@ -76,7 +80,9 @@ class Locator(BaseModel):
                 "test_id": page.get_by_test_id,
             }
             if self.method == "role":
-                return method_map[self.method](self.value, **(self.kwargs or {}), **kwargs)
+                return method_map[self.method](
+                    self.value, **(self.kwargs or {}), **kwargs
+                )
             return method_map[self.method](self.value, **kwargs)
         return page.locator(self.selector)
 

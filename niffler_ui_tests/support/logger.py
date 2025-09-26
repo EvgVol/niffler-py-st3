@@ -31,7 +31,9 @@ class Logger:
         formatter = logging.Formatter(settings.logging.format)
 
         self._logger = logging.getLogger(name)
-        self._logger.setLevel(getattr(logging, log_level.upper(), logging.INFO))
+        self._logger.setLevel(
+            getattr(logging, log_level.upper(), logging.INFO)
+        )
         self._logger.handlers.clear()
         console_handler = logging.StreamHandler()
         console_handler.setFormatter(formatter)

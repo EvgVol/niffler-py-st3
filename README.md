@@ -87,7 +87,7 @@ docker pull confluentinc/cp-kafka:7.3.2
 После `pull` вы увидите спуленный image командой `docker images`
 
 ```posh
-mitriis-MacBook-Pro ~ % docker images            
+mitriis-MacBook-Pro ~ % docker images
 REPOSITORY                 TAG              IMAGE ID       CREATED         SIZE
 postgres                   15.1             9f3ec01f884d   10 days ago     379MB
 confluentinc/cp-kafka      7.3.2            db97697f6e28   12 months ago   457MB
@@ -221,7 +221,7 @@ FATAL: database "niffler-auth" does not exist
 то необходимо проверить, было ли сообщение об автоматическом создании баз данныхз в логе контейнера с Postgres (niffler-all):
 ```posh
 docker logs -f niffler-all
-... 
+...
 Multiple database creation requested: niffler-auth,niffler-currency,niffler-spend,niffler-userdata"
 ...
 ```
@@ -302,7 +302,7 @@ WSDL сервиса niffler-userdata доступен по адресу: http://
 ```
 * What went wrong:
 Execution failed for task ':niffler-auth:jibDockerBuild'.
-> com.google.cloud.tools.jib.plugins.common.BuildStepsExecutionException: 
+> com.google.cloud.tools.jib.plugins.common.BuildStepsExecutionException:
 Build to Docker daemon failed, perhaps you should make sure your credentials for 'registry-1.docker.io...
 ```
 

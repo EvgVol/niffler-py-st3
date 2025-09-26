@@ -9,10 +9,10 @@ def test_visible_logo(client: LoginPage):
     with allure.step("Открытие страницы авторизации"):
         login_page = client.open()
     with allure.step("Проверка видимости логотипа"):
-        login_page.asserts('логотип').should_be_visible()
+        login_page.asserts("логотип").should_be_visible()
 
-
-@pytest.mark.parametrize("field", ['поле ввода логина', 'поле ввода пароля'])
+@allure.title("Поля авторизации видны на странице")
+@pytest.mark.parametrize("field", ["поле ввода логина", "поле ввода пароля"])
 def test_visible_fields(client: LoginPage, field: str):
     with allure.step("Открытие страницы авторизации"):
         login_page = client.open()
@@ -20,7 +20,8 @@ def test_visible_fields(client: LoginPage, field: str):
         login_page.asserts(field).should_be_visible()
 
 
-@pytest.mark.parametrize("button", ['кнопка входа', 'кнопка регистрации'])
+@allure.title("Кнопки авторизации видны на странице")
+@pytest.mark.parametrize("button", ["кнопка входа", "кнопка регистрации"])
 def test_visible_buttons(client: LoginPage, button: str):
     with allure.step("Открытие страницы авторизации"):
         login_page = client.open()

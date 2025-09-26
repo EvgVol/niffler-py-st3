@@ -3,7 +3,6 @@ import shutil
 from pathlib import Path
 
 from playwright.sync_api import Page, BrowserContext
-from _pytest.fixtures import FixtureRequest
 
 from niffler_ui_tests.configs import settings
 
@@ -32,11 +31,11 @@ class Report:
         return test_dir / f"{test_file}_{test_name}_{timestamp}.{ext}"
 
     def save_screenshot(self, page: Page, item) -> None:
-        screenshot_path = self.get_path(item, self.report_path, 'png')
+        screenshot_path = self.get_path(item, self.report_path, "png")
         page.screenshot(path=screenshot_path, full_page=True)
 
     def save_video(self, context: BrowserContext, item) -> None:
-        video_path = self.get_path(item, self.report_path, 'webm')
+        video_path = self.get_path(item, self.report_path, "webm")
         last_page = context.pages[-1]
 
         if last_page.video and last_page.video.path():

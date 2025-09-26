@@ -24,4 +24,3 @@ export {
     tokenUrl,
     revokeAccessTokenUrl,
 };
-
