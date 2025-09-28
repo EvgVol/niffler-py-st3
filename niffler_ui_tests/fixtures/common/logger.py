@@ -1,27 +1,43 @@
+import re
 from pathlib import Path
 
 import pytest
 from niffler_ui_tests.support.logger import Logger
 
 
-@pytest.fixture(scope="session")
-def logger(request, settings):
-    """Фикстура для настройки логирования."""
+@pytest.fixture
+def logger(request, settings) -> Logger:
+    """Логгер на каждый тест."""
+    safe_name = re.sub(r"[:/\\]", "_", request.node.nodeid)
     log = Logger(
-        name=request.node.name, log_dir=Path(settings.logging.dir)
+        name=safe_name,
+        log_dir=Path(settings.logging.dir),
+        log_level=settings.logging.level,
     ).logger
-    log.info(f"{"=" * 40}")
-    log.info(f"Browser: {settings.browser.browser_name}")
-    log.info(f"Viewport: {settings.browser.height} x {settings.browser.width}")
-    log.info(f"Headless: {settings.browser.headless}")
-    log.info(f"Report path: {settings.report.path}")
-    log.info(f"{"-" * 40}")
-    return log
+
+    log.info("=" * 70)
+    log.info(f"START TEST: {request.node.nodeid}")
+    log.info(
+        f"Browser: {settings.browser.browser_name} | "
+        f"Viewport: {settings.browser.height}x{settings.browser.width} | "
+        f"Headless: {settings.browser.headless}"
+    )
+    log.info("-" * 70)
+    yield log
+    log.info(f"END TEST: {request.node.nodeid}")
+    log.info("=" * 70)
 
 
 @pytest.fixture(autouse=True)
-def log_test_start_and_end(request, logger):
+def log_test_start_and_end(request, settings, logger):
     """Логирование старта и окончания каждого теста."""
-    logger.info(f"--- Тест {request.node.name} стартует ---")
+    test_name = request.node.name
+    browser = settings.browser.browser_name
+    viewport = f"{settings.browser.height}x{settings.browser.width}"
+    headless = settings.browser.headless
+
+    logger.info(
+        f"START {test_name} | {browser} {viewport} headless={headless}"
+    )
     yield
-    logger.info(f"--- Тест {request.node.name} завершен ---")
+    logger.info(f"END   {test_name} | SUCCESS")

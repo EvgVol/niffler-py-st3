@@ -7,11 +7,13 @@ import allure
 
 from psycopg2.extras import RealDictRow
 
+from niffler_ui_tests.support.logger import Logger
+from niffler_ui_tests.support.utils import (
+    AllureAttachmentData,
+    _json_serializer,
+)
 
-def _json_serializer(obj):
-    if isinstance(obj, datetime):
-        return obj.isoformat()
-    return str(obj)
+logger = Logger(name="root").logger
 
 
 class DbResponse:
@@ -44,7 +46,7 @@ class DbResponse:
         self.execution_time = execution_time
         self.timestamp = datetime.now().isoformat()
 
-        self._attach_to_allure()
+        self._log_response()
 
     @property
     def body(self):
@@ -87,21 +89,27 @@ class DbResponse:
             "DbResponse не поддерживает индексацию, если result не список."
         )
 
-    def _attach_to_allure(self):
-        """Прикрепить SQL-запрос и результат к Allure-отчёту."""
-        with allure.step("SQL-запрос к БД"):
-            allure.attach(
-                self.query,
+    def _log_response(self):
+        """Логировать и прикреплять SQL-запрос и результат."""
+        logger.info(
+            "SQL Response | query=%s | rowcount=%s | elapsed=%s | result=%s",
+            self.query,
+            self.rowcount,
+            f"{self.execution_time:.4f}s" if self.execution_time else None,
+            json.dumps(
+                self.result, ensure_ascii=False, default=_json_serializer
+            ),
+        )
+
+        with allure.step("SQL-запрос и ответ БД"):
+            AllureAttachmentData(
                 name="SQL-запрос",
+                body=self.query,
                 attachment_type=allure.attachment_type.TEXT,
-            )
-            allure.attach(
-                json.dumps(
-                    self.result,
-                    ensure_ascii=False,
-                    indent=2,
-                    default=_json_serializer,
-                ),
+            ).attach()
+
+            AllureAttachmentData(
                 name="Результат SQL-запроса",
+                body=self.result,
                 attachment_type=allure.attachment_type.JSON,
-            )
+            ).attach()

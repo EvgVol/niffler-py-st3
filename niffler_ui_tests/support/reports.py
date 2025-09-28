@@ -21,7 +21,6 @@ class Report:
         date_folder = now.strftime("%Y-%m-%d")
         timestamp = now.strftime("%H-%M-%S")
 
-        # item — это pytest.Function
         test_file = Path(str(item.fspath)).stem
         test_name = item.name
 

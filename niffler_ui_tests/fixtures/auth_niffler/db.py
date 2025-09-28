@@ -13,10 +13,5 @@ def auth_niffler_db(settings: Settings) -> DbManager:
         db_user=settings.environment.auth_niffler_db_user,
         db_password=settings.environment.auth_niffler_db_password,
     )
-    session = db.open_session()
-
-    try:
-        yield db
-
-    finally:
-        session.close()
+    with db as manager:
+        yield manager

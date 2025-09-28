@@ -26,7 +26,7 @@ class LoggingSettings(BaseSettings):
         description="Путь до директории логов",
     )
     format: str = Field(
-        default="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+        default="%(asctime)s | %(levelname)-5s | %(name)s | %(message)s",
         alias="LOG_FORMAT",
         description="Формат строки лога",
     )
